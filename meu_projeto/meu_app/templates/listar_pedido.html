@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Listagem de Pedidos</h1>
+{% for pedido in pedidos %}
+<form action="{% url 'excluir_pedido' pedido.pk %}" method="post">
+  {% csrf_token %}
+    <p>{{pedido.id}} - {{pedido.cliente}} - {{pedido.produto}} - {{pedido.quantidade}}
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class = "btn btn-danger" onclick="return confirm('Pedido excluido com sucesso!')">Excluir</button>
+{% endfor %}
+  </p>
+  </form>
+{% endblock %}

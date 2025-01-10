@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1>Lista de Clientes</h1>
+  {% csrf_token %}
+
+  {% for cliente in clientes %}
+        
+          {% csrf_token %}
+          <p>{{ cliente.id }} - {{ cliente.nome }}
+          <a href="{% url 'excluir_cliente' cliente.id %}"><button type="submit" class="btn btn-danger" onclick="return confirm('Cliente excluido com sucesso!')">Excluir</button>
+          </a>
+            <button type="submit" class="btn btn-primary">Editar</button>
+            </form>
+        </p>
+        </form>
+  {% endfor %}
+  
+
+  <form method="post">
+    {% csrf_token %}
+    
+  </form>
+{% endblock %}
