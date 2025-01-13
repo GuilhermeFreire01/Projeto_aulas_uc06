@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Cliente, Produto, Pedido
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def home(request):
@@ -93,18 +94,26 @@ def listar_cliente(request):
 
 def excluir_cliente(request, cliente_id):
     Cliente.objects.filter(id=cliente_id).delete()
-    return render( request, 'listar_cliente.html')
+    return redirect('listar_cliente')
 
-def editar_cliente(request, pk):
-    clientes = Cliente.objects.get(pk=pk)
+def editar_cliente(request, cliente_id):
+    # Busca o cliente pelo ID
+    cliente = get_object_or_404(Cliente, id=cliente_id)
+
     if request.method == 'POST':
-        clientes.nome = request.POST.get('nome')
-        clientes.telefone = request.POST.get('telefone')
-        clientes.email = request.POST.get('email')
-        clientes.save()
-        return redirect('listar_cliente')
-    return render(request, 'editar_cliente.html', {'clientes': clientes})
+        # Recebe os dados do formulário
+        cliente.nome = request.POST.get('nome')
+        cliente.telefone = request.POST.get('telefone')
+        cliente.email = request.POST.get('email')
 
+        # Salva as alterações no banco de dados
+        cliente.save()
+
+        # Redireciona para a página de listagem de clientes
+        return redirect('listar_cliente')
+
+    # Se for um GET, apenas exibe o formulário com os dados atuais
+    return render(request, 'editar_cliente.html', {'cliente': cliente})
 def listar_pedido(request):
     pedidos = Pedido.objects.all()
     return render(request, 'listar_pedido.html', {'pedidos': pedidos})

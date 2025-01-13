@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
 
+{% block title %}Lista de Clientes{% endblock %}
+
 {% block content %}
-
-  <h1>Lista de Clientes</h1>
-  {% csrf_token %}
-
-  {% for cliente in clientes %}
-        
-          {% csrf_token %}
-          <p>{{ cliente.id }} - {{ cliente.nome }}
-          <a href="{% url 'excluir_cliente' cliente.id %}"><button type="submit" class="btn btn-danger" onclick="return confirm('Cliente excluido com sucesso!')">Excluir</button>
-          </a>
-            <button type="submit" class="btn btn-primary">Editar</button>
-            </form>
-        </p>
-        </form>
-  {% endfor %}
-  
-
-  <form method="post">
-    {% csrf_token %}
-    
-  </form>
+<h1>Clientes</h1>
+<ul>
+    {% for cliente in clientes %}
+    <form id="form_listar">
+    <p>
+           {{ cliente.id }} - {{ cliente.nome }}
+           <button id="deletar"> <a href="{% url 'excluir_cliente' cliente.id %}" onclick="return confirm('Excluir este cliente?');">
+                Excluir 
+            </a>
+            
+        </button>
+        <button id="atualizar">
+            <a href="{% url 'editar_cliente' cliente.id %}"> Editar</a>           
+        </button>
+    </p>
+    </form>
+    {% endfor %}
+</ul>
 {% endblock %}
